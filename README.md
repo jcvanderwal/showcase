@@ -132,7 +132,7 @@ Each slice implements the same functionality in both apps using idiomatic langua
 | Component | Kotlin App | Java App |
 |-----------|-----------|----------|
 | Language | Kotlin 2.1 | Java 25 |
-| Framework | Spring Boot 3.4 | Spring Boot 3.4 |
+| Framework | Spring Boot 4.0 | Spring Boot 4.0 |
 | Async | Coroutines + Flow | Virtual Threads + StructuredTaskScope |
 | Unit Tests | JUnit 5 | JUnit 5 |
 | Property Tests | Kotest Property | jqwik |

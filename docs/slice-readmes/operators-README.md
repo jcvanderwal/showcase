@@ -50,6 +50,18 @@ List<DomainEvent> events = CommandExecutor.execute(handler, command);
 
 Operator overloading is a double-edged sword. When used judiciously on domain types (tag sets, event streams), it makes code read more naturally. When overused, it can obscure intent. Java 25 has no operator overloading at all — named methods are always explicit, which some teams prefer. This is a genuine Kotlin advantage for teams that value expressiveness.
 
+## Java Ecosystem Workaround: Manifold
+
+[Manifold](https://manifold.systems/) (version 2026.1.6, fully supports JDK 8–25) adds operator overloading to Java via compiler plugin. You implement conventionally-named methods (`plus()`, `compareTo()`, `contains()`, etc.) and Manifold lets you use the corresponding operators (`+`, `>`, `in`) in Java source code:
+
+```java
+// With Manifold, implement plus() and use + operator in Java
+public Set<String> plus(Set<String> other) { return Stream.concat(...).collect(...); }
+// Usage: var merged = tags1 + tags2;
+```
+
+This gives Java the same operator syntax as Kotlin for domain types. The tradeoff is adding a non-standard compiler plugin. IntelliJ support is provided via the Manifold IDE plugin.
+
 ## Source Files
 
 - **Kotlin**: `kotlin-app/src/main/kotlin/com/showcase/kotlin/slice/operators/`

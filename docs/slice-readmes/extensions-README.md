@@ -55,6 +55,24 @@ public class TaskUtils {
 
 Java 25 has no equivalent to extension functions. Static utility methods work but lack discoverability — you need to know `TaskUtils` exists. Kotlin extensions appear in IDE auto-complete on the type itself, making APIs more discoverable and code more readable.
 
+## Java Ecosystem Workaround: Manifold
+
+[Manifold](https://manifold.systems/) is a Java compiler plugin (version 2026.1.6, fully supports JDK 8–25) that adds true extension methods to Java. You declare a static method in an `@Extension` class with a `@This`-annotated first parameter, and it becomes callable as an instance method with full IDE auto-complete in IntelliJ:
+
+```java
+@Extension
+public class TaskSummaryExt {
+    public static boolean isOverdue(@This TaskSummary task) {
+        return task.dueDate() != null
+            && task.dueDate().isBefore(LocalDate.now())
+            && !(task.status() instanceof TaskStatus.Completed);
+    }
+}
+// Usage: task.isOverdue() — same syntax as Kotlin
+```
+
+Manifold also supports extension properties via getter/setter conventions. The tradeoff is adding a non-standard compiler plugin to your build.
+
 ## Source Files
 
 - **Kotlin**: `kotlin-app/src/main/kotlin/com/showcase/kotlin/slice/extensions/`

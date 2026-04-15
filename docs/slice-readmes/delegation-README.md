@@ -65,6 +65,28 @@ public class LoggingEventStore implements EventStore {
 
 Java 25 has no built-in delegation mechanism. Every interface method must be manually forwarded, and adding a new method to the interface requires updating every decorator. Kotlin's `by` keyword eliminates this boilerplate entirely — you only override the methods you want to customize.
 
+## Java Ecosystem Workaround: Lombok @Delegate / AutoDelegate
+
+[Lombok's `@Delegate`](https://projectlombok.org/features/Delegate) annotation auto-generates forwarding methods at compile time, closely mirroring Kotlin's `by` keyword:
+
+```java
+public class LoggingEventStore implements EventStore {
+    @Delegate(excludes = AppendOnly.class)
+    private final EventStore delegate;
+
+    // Only override what you need — Lombok forwards the rest
+    @Override
+    public void append(String aggregateId, List<DomainEvent> events) {
+        log.info("Appending " + events.size() + " events");
+        delegate.append(aggregateId, events);
+    }
+
+    private interface AppendOnly { void append(String id, List<DomainEvent> events); }
+}
+```
+
+Alternatively, [AutoDelegate](https://www.ryandens.com/post/auto_delegate/) is a standalone annotation processor on Maven Central that generates delegation code without Lombok. Neither provides property delegates (`lazy`, `observable`), which remain a Kotlin-only feature.
+
 ## Source Files
 
 - **Kotlin**: `kotlin-app/src/main/kotlin/com/showcase/kotlin/slice/delegation/`

@@ -59,6 +59,10 @@ var project = ProjectBuilder.create()
 
 Java 25 records and sealed interfaces have reduced boilerplate for simple builders, and lambda parameters enable nesting. However, Kotlin's lambdas-with-receivers provide a fundamentally different capability: the receiver type controls what methods are available inside each block, and `@DslMarker` prevents accidental scope leaking. Java 25 has no equivalent mechanism.
 
+## Java Ecosystem Workaround: Jilt (Partial)
+
+[Jilt](https://github.com/skinny85/jilt) is an annotation processor that auto-generates type-safe staged builders, enforcing required fields at compile time via the type system (each setter returns a different interface, so you can't call `build()` until all required fields are set). This addresses the "required fields" aspect of Kotlin DSLs but does not replicate `@DslMarker` scope control or the nested-block syntax that lambdas-with-receivers provide. This remains the widest gap in the DSL space.
+
 ## Source Files
 
 - **Kotlin**: `kotlin-app/src/main/kotlin/com/showcase/kotlin/slice/dslbuilders/`

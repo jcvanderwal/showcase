@@ -44,15 +44,19 @@ The remaining Kotlin advantages are syntactic: smart casts within `when` branche
 
 ### Kotlin Still Leads
 
-These seven areas represent genuine Kotlin advantages where Java 25 has no equivalent mechanism or only partial workarounds:
+These seven areas represent genuine Kotlin advantages where Java 25 has no built-in equivalent. However, the Java ecosystem offers workarounds for several of them:
 
-- **Null safety**: Compile-time vs runtime enforcement is a fundamental difference
-- **Extension functions**: No Java equivalent for adding methods to existing types
-- **DSL builders**: Lambdas-with-receivers and `@DslMarker` have no Java counterpart
-- **Delegation**: `by` keyword eliminates boilerplate Java must write manually
-- **Operator overloading**: Java has no operator overloading support
-- **Reified generics / value classes**: Type erasure and heap allocation are JVM-level constraints
-- **Multiplatform**: KMP's cross-platform code sharing is unique to Kotlin
+| Area | Java Workaround | Status |
+|------|----------------|--------|
+| **Null safety** | [JSpecify](https://jspecify.dev/) + [NullAway](https://github.com/uber/NullAway) — compile-time null checking via Error Prone plugin. Spring Boot 4.0 / Spring Framework 7.0 adopted JSpecify natively. | Production-ready |
+| **Extension functions** | [Manifold](https://manifold.systems/) compiler plugin — `@Extension` + `@This` annotations enable true extension methods. Fully supports JDK 8–25 (latest version: 2026.1.6). | Production-ready, JDK 25 supported |
+| **DSL builders** | [Jilt](https://github.com/skinny85/jilt) annotation processor generates type-safe staged builders enforcing required fields. No equivalent to `@DslMarker` scope control. | Partial — no scope control |
+| **Delegation** | [Lombok `@Delegate`](https://projectlombok.org/features/Delegate) or [AutoDelegate](https://www.ryandens.com/post/auto_delegate/) annotation processor — auto-generates forwarding methods. | Production-ready |
+| **Operator overloading** | [Manifold](https://manifold.systems/) compiler plugin — implement `plus()`, `compareTo()`, etc. and use `+`, `>` in Java source. Fully supports JDK 25. | Production-ready, JDK 25 supported |
+| **Reified generics / value classes** | No workaround for reified generics (type erasure is fundamental). For value classes: [JEP 401](https://openjdk.org/jeps/401) (Value Classes and Objects) has an early-access build but is not in JDK 25 yet. | Reified: no solution. Value classes: upcoming |
+| **Multiplatform** | No equivalent. GraalVM Native Image compiles to native binaries but doesn't share code with JS/Wasm/iOS. | No solution |
+
+Note: Manifold is a third-party compiler plugin, not part of standard Java. Teams should evaluate the tradeoff between Kotlin-like ergonomics and dependency on a non-standard toolchain.
 
 ## Per-Slice Documentation
 

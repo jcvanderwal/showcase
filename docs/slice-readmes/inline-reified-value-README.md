@@ -60,6 +60,12 @@ public record ProjectId(String value) {}
 
 Java 25 records partially address the value class use case — they provide type safety for identifiers. However, records allocate on the heap while Kotlin value classes are inlined to their underlying type at runtime. For reified generics, Java has no equivalent — type erasure is a fundamental JVM limitation that Kotlin works around via inlining.
 
+## Java Ecosystem Workaround: JEP 401 (Upcoming)
+
+For value classes: [JEP 401: Value Classes and Objects (Preview)](https://openjdk.org/jeps/401) is part of Project Valhalla and has an [early-access build](https://jdk.java.net/valhalla/) available. It would give Java identity-free, potentially zero-overhead value classes similar to Kotlin's `@JvmInline value class`. Not in JDK 25 yet, but expected in a future release.
+
+For reified generics: no solution exists or is planned. The Valhalla team has consciously chosen to keep type erasure (see Brian Goetz's "In Defense of Erasure" design note). The `Class<T>` token pattern and `@SuppressWarnings("unchecked")` remain the standard Java workaround.
+
 ## Source Files
 
 - **Kotlin**: `kotlin-app/src/main/kotlin/com/showcase/kotlin/slice/inlinereifiedvalue/`

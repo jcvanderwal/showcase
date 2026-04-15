@@ -52,6 +52,12 @@ switch (task.assignee()) {
 
 Kotlin's compile-time null safety remains a genuine advantage. Java 25's null-pattern `switch` and improved `Optional` ergonomics have made null handling less painful, but they cannot prevent null-related bugs at compile time. A `@Nullable` annotation is a hint; Kotlin's `?` is a guarantee.
 
+## Java Ecosystem Workaround: JSpecify + NullAway
+
+[JSpecify](https://jspecify.dev/) provides standardized `@Nullable`/`@NonNull` annotations, and [NullAway](https://github.com/uber/NullAway) (by Uber) is an Error Prone plugin that enforces them at compile time. Spring Boot 4.0 / Spring Framework 7.0 have adopted JSpecify natively, making this the recommended approach for Java null safety.
+
+With JSpecify + NullAway configured, Java gets compile-time null checking that catches most NPEs before runtime. It's not type-system-level like Kotlin (you can still bypass it), but it significantly narrows the gap for teams willing to adopt the tooling.
+
 ## Source Files
 
 - **Kotlin**: `kotlin-app/src/main/kotlin/com/showcase/kotlin/slice/nullsafety/`
